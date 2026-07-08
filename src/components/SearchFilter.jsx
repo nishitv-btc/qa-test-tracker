@@ -37,7 +37,7 @@ function SearchFilter({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
           >
             <option value="All">All</option>
             <option value="Pass">Pass</option>
@@ -58,7 +58,7 @@ function SearchFilter({
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
-            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
           >
             <option value="asc">A → Z</option>
             <option value="desc">Z → A</option>
@@ -70,7 +70,7 @@ function SearchFilter({
         <div className="flex items-end">
           <button
             onClick={clearFilters}
-            className="w-full lg:w-auto bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition"
+            className="w-full lg:w-auto bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition cursor-pointer"
           >
             🧹 Clear
           </button>

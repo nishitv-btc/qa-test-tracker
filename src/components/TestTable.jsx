@@ -110,7 +110,8 @@ function TestTable({
             {testCases.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center py-10 text-gray-500">
-                  No test cases found. Please import an Excel file to begin.
+                  No test cases found. Add Test Cases or Import an Excel file to
+                  begin.
                 </td>
               </tr>
             ) : (

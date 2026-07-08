@@ -105,23 +105,6 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
 
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <label className="font-semibold">Status</label>
-
-              <select
-                name="status"
-                value={form.status}
-                onChange={handleChange}
-                className="w-full border rounded-lg p-3 mt-1"
-              >
-                <option value="">Pending</option>
-                <option>Pass</option>
-                <option>Fail</option>
-                <option>Not Applicable</option>
-                <option>Unable to Test</option>
-              </select>
-            </div>
-
-            <div>
               <label className="font-semibold">Comments</label>
 
               <input

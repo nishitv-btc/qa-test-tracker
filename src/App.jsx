@@ -250,7 +250,7 @@ function App() {
                 setEditingTestCase(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow cursor-pointer transition"
             >
               ➕ Add Test Case
             </button>
