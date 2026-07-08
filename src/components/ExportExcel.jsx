@@ -4,20 +4,33 @@ function ExportExcel({ testCases }) {
   const exportExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
       testCases.map((tc) => ({
-        ID: tc.id,
         Module: tc.module,
         "Sub Module": tc.subModule,
         Description: tc.description,
-        Status: tc.status,
+        Status: tc.status || "Pending",
+        "Execution Date": tc.executionDate || "",
         Comments: tc.comments,
       })),
     );
+
+    // Set column widths
+    worksheet["!cols"] = [
+      { wch: 20 }, // Module
+      { wch: 20 }, // Sub Module
+      { wch: 45 }, // Description
+      { wch: 18 }, // Status
+      { wch: 25 }, // Execution Date
+      { wch: 50 }, // Comments
+    ];
 
     const workbook = XLSX.utils.book_new();
 
     XLSX.utils.book_append_sheet(workbook, worksheet, "Execution Results");
 
-    XLSX.writeFile(workbook, "QA_Test_Execution.xlsx");
+    XLSX.writeFile(
+      workbook,
+      `QA_Test_Execution_${new Date().toISOString().slice(0, 10)}.xlsx`,
+    );
   };
 
   return (

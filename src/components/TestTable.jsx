@@ -21,6 +21,48 @@ function getStatusClass(status) {
   }
 }
 
+function getPriorityClass(priority) {
+  switch (priority) {
+    case "High":
+      return "bg-red-100 text-red-700";
+
+    case "Medium":
+      return "bg-yellow-100 text-yellow-700";
+
+    case "Low":
+      return "bg-green-100 text-green-700";
+
+    default:
+      return "bg-gray-100 text-gray-700";
+  }
+}
+
+function renderComment(comment) {
+  if (!comment) return "-";
+
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  const parts = comment.split(urlRegex);
+
+  return parts.map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
 function TestTable({
   testCases,
   updateStatus,
@@ -48,19 +90,19 @@ function TestTable({
         <table className="min-w-full border-collapse">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border p-3 w-16">#</th>
+              <th className="border p-3">Module</th>
 
-              <th className="border p-3 text-left">Module</th>
+              <th className="border p-3">Sub Module</th>
 
-              <th className="border p-3 text-left">Sub Module</th>
+              <th className="border p-3">Description</th>
 
-              <th className="border p-3 text-left">Description</th>
+              <th className="border p-3 text-center min-w-[170px]">Status</th>
 
-              <th className="border p-3 text-center w-56">Status</th>
+              <th className="border p-3">Execution Date</th>
 
-              <th className="border p-3 text-left w-72">Comments</th>
+              <th className="border p-3">Comments</th>
 
-              <th className="border p-3 text-center w-40">Actions</th>
+              <th className="border p-3">Actions</th>
             </tr>
           </thead>
 
@@ -74,10 +116,6 @@ function TestTable({
             ) : (
               testCases.map((testCase) => (
                 <tr key={testCase.id} className="hover:bg-blue-50 transition">
-                  <td className="border p-3 text-center font-semibold">
-                    {rowNumber[testCase.id]}
-                  </td>
-
                   <td className="border p-3 font-medium">{testCase.module}</td>
 
                   <td className="border p-3">{testCase.subModule}</td>
@@ -106,16 +144,14 @@ function TestTable({
                     </select>
                   </td>
 
+                  <td className="border p-3 text-sm">
+                    {testCase.executionDate || "-"}
+                  </td>
+
                   <td className="border p-3">
-                    <textarea
-                      rows="2"
-                      value={testCase.comments}
-                      placeholder="Enter comments..."
-                      onChange={(e) =>
-                        updateComments(testCase.id, e.target.value)
-                      }
-                      className="w-full border rounded-md p-2 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
+                    <div className="max-w-xs break-words">
+                      {renderComment(testCase.comments)}
+                    </div>
                   </td>
 
                   <td className="border p-3">

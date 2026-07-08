@@ -38,11 +38,18 @@ function ExcelImport({ setTestCases, resetTrigger }) {
 
       const testCases = rows.map((row, index) => ({
         id: row.ID || index + 1,
+
         module: row.Module || "",
+
         subModule: row["Sub Module"] || "",
+
         description: row.Description || "",
-        comments: row.Comments || "",
+
         status: row.Status || "",
+
+        executionDate: row["Execution Date"] || "",
+
+        comments: row.Comments || "",
       }));
 
       setCount(testCases.length);

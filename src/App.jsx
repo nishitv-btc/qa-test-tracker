@@ -95,14 +95,25 @@ function App() {
   // Update Status
   const updateStatus = (id, status) => {
     setTestCases((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              status,
-            }
-          : item,
-      ),
+      prev.map((item) => {
+        if (item.id !== id) return item;
+
+        let executionDate = item.executionDate;
+
+        if (
+          status &&
+          status !== "" &&
+          (!item.executionDate || item.executionDate === "")
+        ) {
+          executionDate = new Date().toLocaleString();
+        }
+
+        return {
+          ...item,
+          status,
+          executionDate,
+        };
+      }),
     );
   };
 
@@ -150,12 +161,13 @@ function App() {
       setTestCases((prev) => [
         ...prev,
         {
-          id: nextId,
           module: testCase.module,
           subModule: testCase.subModule,
           description: testCase.description,
           status: testCase.status,
           comments: testCase.comments,
+          executionDate:
+            testCase.status !== "" ? new Date().toLocaleString() : "",
         },
       ]);
     }
@@ -174,9 +186,9 @@ function App() {
 
     const duplicate = {
       ...testCase,
-      id: nextId,
       status: "",
       comments: "",
+      executionDate: "",
     };
 
     setTestCases((prev) => [...prev, duplicate]);
