@@ -45,13 +45,13 @@ function TestTable({ testCases, updateStatus, updateComments }) {
 
               <th className="border p-3 text-left">Module</th>
 
-              <th className="border p-3 text-left">Sub Module</th>
+              <th className="border p-3 text-left">Sub_Module</th>
 
               <th className="border p-3 text-left">Description</th>
 
-              <th className="border p-3 text-left w-72">Comments</th>
-
               <th className="border p-3 text-center w-56">Status</th>
+
+              <th className="border p-3 text-left w-72">Comments</th>
             </tr>
           </thead>
 
@@ -76,18 +76,6 @@ function TestTable({ testCases, updateStatus, updateComments }) {
                   <td className="border p-3">{testCase.description}</td>
 
                   <td className="border p-3">
-                    <textarea
-                      rows="2"
-                      value={testCase.comments}
-                      placeholder="Enter comments..."
-                      onChange={(e) =>
-                        updateComments(testCase.id, e.target.value)
-                      }
-                      className="w-full border rounded-md p-2 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </td>
-
-                  <td className="border p-3">
                     <select
                       value={testCase.status}
                       onChange={(e) =>
@@ -107,6 +95,18 @@ function TestTable({ testCases, updateStatus, updateComments }) {
                           </option>
                         ))}
                     </select>
+                  </td>
+
+                  <td className="border p-3">
+                    <textarea
+                      rows="2"
+                      value={testCase.comments}
+                      placeholder="Enter comments..."
+                      onChange={(e) =>
+                        updateComments(testCase.id, e.target.value)
+                      }
+                      className="w-full border rounded-md p-2 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
                   </td>
                 </tr>
               ))
