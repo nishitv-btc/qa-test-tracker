@@ -5,6 +5,7 @@ import SearchFilter from "./components/SearchFilter";
 import TestTable from "./components/TestTable";
 import ExcelImport from "./components/ExcelImport";
 import ExportExcel from "./components/ExportExcel";
+import AddEditModal from "./components/AddEditModal";
 //import testCasesData from "./data/testcases";
 
 const STORAGE_KEY = "qa-test-tracker";
@@ -19,6 +20,8 @@ function App() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [showModal, setShowModal] = useState(false);
+  const [editingTestCase, setEditingTestCase] = useState(null);
 
   // Auto Save
   useEffect(() => {
@@ -117,6 +120,74 @@ function App() {
     );
   };
 
+  // Add / Edit Test Case
+  const saveTestCase = (testCase) => {
+    if (editingTestCase) {
+      // Edit existing test case
+
+      setTestCases((prev) =>
+        prev.map((item) =>
+          item.id === editingTestCase.id
+            ? {
+                ...item,
+                module: testCase.module,
+                subModule: testCase.subModule,
+                description: testCase.description,
+                status: testCase.status,
+                comments: testCase.comments,
+              }
+            : item,
+        ),
+      );
+    } else {
+      // Add new test case
+
+      const nextId =
+        testCases.length > 0
+          ? Math.max(...testCases.map((t) => Number(t.id))) + 1
+          : 1;
+
+      setTestCases((prev) => [
+        ...prev,
+        {
+          id: nextId,
+          module: testCase.module,
+          subModule: testCase.subModule,
+          description: testCase.description,
+          status: testCase.status,
+          comments: testCase.comments,
+        },
+      ]);
+    }
+
+    // Close popup
+
+    setEditingTestCase(null);
+    setShowModal(false);
+  };
+
+  const duplicateTestCase = (testCase) => {
+    const nextId =
+      testCases.length > 0
+        ? Math.max(...testCases.map((t) => Number(t.id))) + 1
+        : 1;
+
+    const duplicate = {
+      ...testCase,
+      id: nextId,
+      status: "",
+      comments: "",
+    };
+
+    setTestCases((prev) => [...prev, duplicate]);
+  };
+
+  const deleteTestCase = (id) => {
+    if (!window.confirm("Delete this test case?")) return;
+
+    setTestCases((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Reset All
   const resetExecution = () => {
     if (
@@ -161,6 +232,16 @@ function App() {
             >
               🔄 Reset
             </button>
+
+            <button
+              onClick={() => {
+                setEditingTestCase(null);
+                setShowModal(true);
+              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow transition"
+            >
+              ➕ Add Test Case
+            </button>
           </div>
         </div>
 
@@ -177,6 +258,22 @@ function App() {
           testCases={filteredData}
           updateStatus={updateStatus}
           updateComments={updateComments}
+          onEdit={(testCase) => {
+            setEditingTestCase(testCase);
+            setShowModal(true);
+          }}
+          onDelete={deleteTestCase}
+          onDuplicate={duplicateTestCase}
+        />
+
+        <AddEditModal
+          open={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setEditingTestCase(null);
+          }}
+          onSave={saveTestCase}
+          editingTestCase={editingTestCase}
         />
       </div>
     </div>

@@ -21,7 +21,14 @@ function getStatusClass(status) {
   }
 }
 
-function TestTable({ testCases, updateStatus, updateComments }) {
+function TestTable({
+  testCases,
+  updateStatus,
+  updateComments,
+  onEdit,
+  onDelete,
+  onDuplicate,
+}) {
   const rowNumber = useMemo(() => {
     return testCases.reduce((acc, item, index) => {
       acc[item.id] = index + 1;
@@ -31,7 +38,7 @@ function TestTable({ testCases, updateStatus, updateComments }) {
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      {/* Table Header */}
+      {/* Header */}
 
       <div className="bg-blue-700 text-white px-6 py-4">
         <h2 className="text-xl font-bold">Test Execution</h2>
@@ -45,20 +52,22 @@ function TestTable({ testCases, updateStatus, updateComments }) {
 
               <th className="border p-3 text-left">Module</th>
 
-              <th className="border p-3 text-left">Sub_Module</th>
+              <th className="border p-3 text-left">Sub Module</th>
 
               <th className="border p-3 text-left">Description</th>
 
               <th className="border p-3 text-center w-56">Status</th>
 
               <th className="border p-3 text-left w-72">Comments</th>
+
+              <th className="border p-3 text-center w-40">Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {testCases.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center py-10 text-gray-500">
+                <td colSpan="7" className="text-center py-10 text-gray-500">
                   No test cases found. Please import an Excel file to begin.
                 </td>
               </tr>
@@ -107,6 +116,34 @@ function TestTable({ testCases, updateStatus, updateComments }) {
                       }
                       className="w-full border rounded-md p-2 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
                     />
+                  </td>
+
+                  <td className="border p-3">
+                    <div className="flex justify-center gap-2">
+                      <button
+                        onClick={() => onEdit(testCase)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+                        title="Edit"
+                      >
+                        ✏️
+                      </button>
+
+                      <button
+                        onClick={() => onDuplicate(testCase)}
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm"
+                        title="Duplicate"
+                      >
+                        📄
+                      </button>
+
+                      <button
+                        onClick={() => onDelete(testCase.id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+                        title="Delete"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
