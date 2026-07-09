@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import EditIcon from "../assets/icons/edit.svg";
 import DuplicateIcon from "../assets/icons/duplicate.svg";
 import DeleteIcon from "../assets/icons/delete.svg";
-import { Pencil, Copy, Trash2 } from "lucide-react";
+import { Pencil, Copy, Trash2, Bug } from "lucide-react";
+import { Filter, X } from "lucide-react";
 const statusOptions = ["", "Pass", "Fail", "Not Applicable", "Unable to Test"];
 
 function getStatusClass(status) {
@@ -24,31 +25,51 @@ function getStatusClass(status) {
   }
 }
 
-function getPriorityClass(priority) {
-  switch (priority) {
-    case "High":
-      return "bg-red-100 text-red-700";
-
-    case "Medium":
-      return "bg-yellow-100 text-yellow-700";
-
-    case "Low":
-      return "bg-green-100 text-green-700";
-
-    default:
-      return "bg-gray-100 text-gray-700";
-  }
-}
-
 function renderComment(comment) {
   if (!comment) return "-";
 
+  // Existing URL support
   const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  // BUG-1234 or BUG:1234
+  const bugRegex = /(BUG[-:]?\s*\d+)/i;
+
+  // Plain numeric Bug ID (4+ digits)
+  const numericBugRegex = /^\d{4,}$/;
+
+  if (bugRegex.test(comment)) {
+    const bug = comment.match(bugRegex)[0];
+    const bugId = bug.replace(/\D/g, "");
+
+    return (
+      <a
+        href={`https://bugtracker.boston-technology.com/issues/${bugId}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline font-medium"
+      >
+        🐞 {bug.toUpperCase()}
+      </a>
+    );
+  }
+
+  if (numericBugRegex.test(comment.trim())) {
+    return (
+      <a
+        href={`https://bugtracker.boston-technology.com/issues/${comment.trim()}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline font-medium"
+      >
+        #️{comment.trim()}
+      </a>
+    );
+  }
 
   const parts = comment.split(urlRegex);
 
   return parts.map((part, index) => {
-    if (part.match(urlRegex)) {
+    if (urlRegex.test(part)) {
       return (
         <a
           key={index}
@@ -73,7 +94,11 @@ function TestTable({
   onEdit,
   onDelete,
   onDuplicate,
+  onCreateBug,
+  statusFilter,
+  setStatusFilter,
 }) {
+  const [showFilter, setShowFilter] = useState(false);
   const rowNumber = useMemo(() => {
     return testCases.reduce((acc, item, index) => {
       acc[item.id] = index + 1;
@@ -99,11 +124,51 @@ function TestTable({
 
               <th className="border p-3">Description</th>
 
-              <th className="border p-3 text-center min-w-[170px]">Status</th>
+              <th className="border p-3 min-w-[220px]">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold">Status</span>
+
+                  {showFilter ? (
+                    <div className="flex items-center gap-1">
+                      <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="border rounded-md px-2 py-1 text-sm bg-white outline-none cursor-pointer"
+                      >
+                        <option value="All">All</option>
+                        <option value="">Pending</option>
+                        <option value="Pass">Pass</option>
+                        <option value="Fail">Fail</option>
+                        <option value="Not Applicable">Not Applicable</option>
+                        <option value="Unable to Test">Unable to Test</option>
+                      </select>
+
+                      <button
+                        onClick={() => {
+                          setStatusFilter("All");
+                          setShowFilter(false);
+                        }}
+                        className="text-gray-500 hover:text-red-500 transition cursor-pointer"
+                        title="Clear Filter"
+                      >
+                        <X size={16} strokeWidth={2} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setShowFilter(true)}
+                      className="cursor-pointer text-gray-500 hover:text-blue-600 transition"
+                      title="Filter"
+                    >
+                      <Filter size={18} />
+                    </button>
+                  )}
+                </div>
+              </th>
 
               <th className="border p-3">Execution Date</th>
 
-              <th className="border p-3">Comments/Bug ID</th>
+              <th className="border p-3">Bug ID/ Comments</th>
 
               <th className="border p-3">Actions</th>
             </tr>
@@ -132,7 +197,7 @@ function TestTable({
                       onChange={(e) =>
                         updateStatus(testCase.id, e.target.value)
                       }
-                      className={`w-full border rounded-md p-2 font-semibold outline-none ${getStatusClass(
+                      className={`w-full border rounded-md p-2 font-semibold outline-none cursor-pointer ${getStatusClass(
                         testCase.status,
                       )}`}
                     >
@@ -163,7 +228,7 @@ function TestTable({
                       <button
                         onClick={() => onEdit(testCase.id)}
                         title="Edit"
-                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-blue-800 transition-transform duration-200 hover:scale-110"
                       >
                         <Pencil size={20} strokeWidth={2} />
                       </button>
@@ -171,15 +236,23 @@ function TestTable({
                       <button
                         onClick={() => onDuplicate(testCase)}
                         title="Duplicate"
-                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-green-600 transition-transform duration-200 hover:scale-110"
                       >
                         <Copy size={20} strokeWidth={2} />
                       </button>
 
                       <button
+                        onClick={() => onCreateBug(testCase)}
+                        title="Create Redmine Bug"
+                        className="cursor-pointer text-gray-600 hover:text-red-600 transition-transform duration-200 hover:scale-110"
+                      >
+                        <Bug size={22} strokeWidth={2} />
+                      </button>
+
+                      <button
                         onClick={() => onDelete(testCase.id)}
                         title="Delete"
-                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-red-500 transition-transform duration-200 hover:scale-110"
                       >
                         <Trash2 size={20} strokeWidth={2} />
                       </button>

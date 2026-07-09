@@ -25,7 +25,7 @@ function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
 
         {/* Status Filter */}
 
-        <div className="w-full lg:w-56">
+        {/* <div className="w-full lg:w-56">
           <label className="block text-sm font-semibold mb-2">📋 Status</label>
 
           <select
@@ -40,11 +40,11 @@ function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
             <option value="Unable to Test">Unable to Test</option>
             <option value="">Pending</option>
           </select>
-        </div>
+        </div> */}
 
         {/* Clear Button */}
 
-        <div className="flex items-end">
+        {/* <div className="flex items-end">
           <button
             onClick={clearFilters}
             className="w-full lg:w-auto bg-gray-600 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition cursor-pointer flex items-center gap-2"
@@ -52,7 +52,7 @@ function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
             <Eraser size={18} strokeWidth={2} />
             Clear
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

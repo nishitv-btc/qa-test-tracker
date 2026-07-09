@@ -101,7 +101,7 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
 
           <div className="grid grid-cols-2 gap-5">
             <div>
-              <label className="font-semibold">Comments</label>
+              <label className="font-semibold">Comments/Bug ID</label>
 
               <input
                 type="text"

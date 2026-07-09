@@ -53,7 +53,7 @@ function ExportExcel({ testCases }) {
       onClick={exportExcel}
       className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
     >
-      <DocumentArrowDown24Filled fontSize={26} />
+      <DocumentArrowUp24Filled fontSize={26} />
       Export Results
     </button>
   );

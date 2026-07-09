@@ -15,6 +15,8 @@ import {
 } from "@fluentui/react-icons";
 
 const STORAGE_KEY = "qa-test-tracker";
+const redmine_project_id = "thominternal";
+const jira_id = "TH-2113";
 
 function App() {
   const [testCases, setTestCases] = useState(() => {
@@ -204,6 +206,31 @@ function App() {
     });
   };
 
+  const createBug = (testCase) => {
+    const subject = encodeURIComponent(
+      `${jira_id} - ${testCase.module} > ${testCase.subModule}`,
+    );
+
+    const description = encodeURIComponent(`*Steps:*
+1. 
+2. 
+3. 
+
+*Actual Result:*
+
+*Expected Result:*
+
+*Screenshot/Video:*
+`);
+
+    const redmineUrl =
+      `https://bugtracker.boston-technology.com/projects/${redmine_project_id}/issues/new` +
+      `?issue[subject]=${subject}` +
+      `&issue[description]=${description}`;
+
+    window.open(redmineUrl, "_blank");
+  };
+
   // -----------------------------
   // Delete
   // -----------------------------
@@ -303,12 +330,15 @@ function App() {
           testCases={filteredData}
           updateStatus={updateStatus}
           updateComments={updateComments}
-          onEdit={(id) => {
-            setEditingId(id);
+          onEdit={(testCase) => {
+            setEditingTestCase(testCase);
             setShowModal(true);
           }}
           onDelete={deleteTestCase}
           onDuplicate={duplicateTestCase}
+          onCreateBug={createBug}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
         />
 
         <AddEditModal
