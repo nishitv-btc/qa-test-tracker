@@ -158,7 +158,7 @@ function App() {
                 module: testCase.module,
                 subModule: testCase.subModule,
                 description: testCase.description,
-                status: testCase.status,
+                status: testCase.status ?? item.status,
                 comments: testCase.comments,
               }
             : item,
@@ -172,7 +172,7 @@ function App() {
           module: testCase.module,
           subModule: testCase.subModule,
           description: testCase.description,
-          status: testCase.status,
+          status: testCase.status ?? item.status,
           comments: testCase.comments,
           executionDate: testCase.status ? new Date().toLocaleString() : "",
         },
@@ -330,8 +330,8 @@ function App() {
           testCases={filteredData}
           updateStatus={updateStatus}
           updateComments={updateComments}
-          onEdit={(testCase) => {
-            setEditingTestCase(testCase);
+          onEdit={(id) => {
+            setEditingId(id);
             setShowModal(true);
           }}
           onDelete={deleteTestCase}
