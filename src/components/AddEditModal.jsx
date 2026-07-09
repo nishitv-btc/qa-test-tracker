@@ -47,10 +47,6 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
     }
 
     onSave(form);
-
-    setForm(defaultForm);
-
-    onClose();
   };
 
   return (
@@ -123,14 +119,14 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
         <div className="flex justify-end gap-3 p-6 border-t">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
+            className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 cursor-pointer transition duration-200"
           >
             Cancel
           </button>
 
           <button
             onClick={handleSave}
-            className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+            className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white cursor-pointer transition duration-200"
           >
             Save
           </button>

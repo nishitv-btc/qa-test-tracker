@@ -1,4 +1,7 @@
 import { useMemo } from "react";
+import EditIcon from "../assets/icons/edit.svg";
+import DuplicateIcon from "../assets/icons/duplicate.svg";
+import DeleteIcon from "../assets/icons/delete.svg";
 
 const statusOptions = ["", "Pass", "Fail", "Not Applicable", "Unable to Test"];
 
@@ -158,27 +161,35 @@ function TestTable({
                   <td className="border p-3">
                     <div className="flex justify-center gap-2">
                       <button
-                        onClick={() => onEdit(testCase)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm"
+                        onClick={() => onEdit(testCase.id)}
                         title="Edit"
+                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
                       >
-                        ✏️
+                        <img src={EditIcon} alt="Edit" className="w-7 h-7" />
                       </button>
 
                       <button
                         onClick={() => onDuplicate(testCase)}
-                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm"
                         title="Duplicate"
+                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
                       >
-                        📄
+                        <img
+                          src={DuplicateIcon}
+                          alt="Duplicate"
+                          className="w-7 h-7"
+                        />
                       </button>
 
                       <button
                         onClick={() => onDelete(testCase.id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
                         title="Delete"
+                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
                       >
-                        🗑️
+                        <img
+                          src={DeleteIcon}
+                          alt="Delete"
+                          className="w-8 h-8"
+                        />
                       </button>
                     </div>
                   </td>

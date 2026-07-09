@@ -1,15 +1,7 @@
-function SearchFilter({
-  search,
-  setSearch,
-  statusFilter,
-  setStatusFilter,
-  sortOrder,
-  setSortOrder,
-}) {
+function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
   const clearFilters = () => {
     setSearch("");
     setStatusFilter("All");
-    setSortOrder("asc");
   };
 
   return (
@@ -45,23 +37,6 @@ function SearchFilter({
             <option value="Not Applicable">Not Applicable</option>
             <option value="Unable to Test">Unable to Test</option>
             <option value="">Pending</option>
-          </select>
-        </div>
-
-        {/* Sort */}
-
-        <div className="w-full lg:w-56">
-          <label className="block text-sm font-semibold mb-2">
-            ↕️ Sort Module
-          </label>
-
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
-          >
-            <option value="asc">A → Z</option>
-            <option value="desc">Z → A</option>
           </select>
         </div>
 

@@ -36,8 +36,8 @@ function ExcelImport({ setTestCases, resetTrigger }) {
 
       const rows = XLSX.utils.sheet_to_json(worksheet);
 
-      const testCases = rows.map((row, index) => ({
-        id: row.ID || index + 1,
+      const testCases = rows.map((row) => ({
+        id: crypto.randomUUID(),
 
         module: row.Module || "",
 
