@@ -1,4 +1,11 @@
 import * as XLSX from "xlsx";
+import { FileUp, FileDown, RotateCcw, Plus } from "lucide-react";
+import {
+  DocumentArrowUp24Filled,
+  DocumentArrowDown24Filled,
+  ArrowClockwise24Filled,
+  AddCircle24Filled,
+} from "@fluentui/react-icons";
 
 function ExportExcel({ testCases }) {
   const exportExcel = () => {
@@ -34,11 +41,20 @@ function ExportExcel({ testCases }) {
   };
 
   return (
+    // <button
+    //   onClick={exportExcel}
+    //   className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
+    // >
+    //   <FileUp size={18} />
+    //   Export Results
+    // </button>
+
     <button
       onClick={exportExcel}
-      className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow cursor-pointer transition duration-200"
+      className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
     >
-      📤 Export Results
+      <DocumentArrowDown24Filled fontSize={26} />
+      Export Results
     </button>
   );
 }

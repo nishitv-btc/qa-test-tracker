@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import EditIcon from "../assets/icons/edit.svg";
 import DuplicateIcon from "../assets/icons/duplicate.svg";
 import DeleteIcon from "../assets/icons/delete.svg";
-
+import { Pencil, Copy, Trash2 } from "lucide-react";
 const statusOptions = ["", "Pass", "Fail", "Not Applicable", "Unable to Test"];
 
 function getStatusClass(status) {
@@ -103,7 +103,7 @@ function TestTable({
 
               <th className="border p-3">Execution Date</th>
 
-              <th className="border p-3">Comments</th>
+              <th className="border p-3">Comments/Bug ID</th>
 
               <th className="border p-3">Actions</th>
             </tr>
@@ -163,33 +163,25 @@ function TestTable({
                       <button
                         onClick={() => onEdit(testCase.id)}
                         title="Edit"
-                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
                       >
-                        <img src={EditIcon} alt="Edit" className="w-7 h-7" />
+                        <Pencil size={20} strokeWidth={2} />
                       </button>
 
                       <button
                         onClick={() => onDuplicate(testCase)}
                         title="Duplicate"
-                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
                       >
-                        <img
-                          src={DuplicateIcon}
-                          alt="Duplicate"
-                          className="w-7 h-7"
-                        />
+                        <Copy size={20} strokeWidth={2} />
                       </button>
 
                       <button
                         onClick={() => onDelete(testCase.id)}
                         title="Delete"
-                        className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                        className="cursor-pointer text-gray-600 hover:text-gray-800 transition-transform duration-200 hover:scale-110"
                       >
-                        <img
-                          src={DeleteIcon}
-                          alt="Delete"
-                          className="w-8 h-8"
-                        />
+                        <Trash2 size={20} strokeWidth={2} />
                       </button>
                     </div>
                   </td>

@@ -6,6 +6,13 @@ import TestTable from "./components/TestTable";
 import ExcelImport from "./components/ExcelImport";
 import ExportExcel from "./components/ExportExcel";
 import AddEditModal from "./components/AddEditModal";
+import { FileUp, FileDown, RotateCcw, Plus } from "lucide-react";
+import {
+  DocumentArrowUp24Filled,
+  DocumentArrowDown24Filled,
+  ArrowClockwise24Filled,
+  AddCircle24Filled,
+} from "@fluentui/react-icons";
 
 const STORAGE_KEY = "qa-test-tracker";
 
@@ -255,19 +262,32 @@ function App() {
 
             <button
               onClick={resetExecution}
-              className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg shadow cursor-pointer transition"
+              className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
             >
-              🔄 Reset
+              <ArrowClockwise24Filled fontSize={26} />
+              Reset
             </button>
+
+            {/* <button
+              onClick={() => {
+                setEditingId(null);
+                setShowModal(true);
+              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
+            >
+              <Plus size={18} />
+              Add Test Case
+            </button> */}
 
             <button
               onClick={() => {
                 setEditingId(null);
                 setShowModal(true);
               }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow cursor-pointer transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow flex items-center gap-2 cursor-pointer transition"
             >
-              ➕ Add Test Case
+              <AddCircle24Filled fontSize={26} />
+              Add Test Case
             </button>
           </div>
         </div>

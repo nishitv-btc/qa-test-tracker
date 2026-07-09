@@ -1,3 +1,5 @@
+import { Eraser } from "lucide-react";
+
 function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
   const clearFilters = () => {
     setSearch("");
@@ -45,9 +47,10 @@ function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
         <div className="flex items-end">
           <button
             onClick={clearFilters}
-            className="w-full lg:w-auto bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition cursor-pointer"
+            className="w-full lg:w-auto bg-gray-600 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition cursor-pointer flex items-center gap-2"
           >
-            🧹 Clear
+            <Eraser size={18} strokeWidth={2} />
+            Clear
           </button>
         </div>
       </div>
