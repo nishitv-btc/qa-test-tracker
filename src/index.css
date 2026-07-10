@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+/* Custom scrollbar for Test Table */
+
+/* Vertical Scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 18px;
+}
+
+/* Horizontal Scrollbar */
+.table-container::-webkit-scrollbar:horizontal {
+  height: 18px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}

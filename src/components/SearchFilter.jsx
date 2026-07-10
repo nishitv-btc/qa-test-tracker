@@ -16,43 +16,12 @@ function SearchFilter({ search, setSearch, statusFilter, setStatusFilter }) {
 
           <input
             type="text"
-            placeholder="Search Module, Sub Module or Description..."
+            placeholder="Search TC ID, Module, Steps, Status, Bug ID..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
-
-        {/* Status Filter */}
-
-        {/* <div className="w-full lg:w-56">
-          <label className="block text-sm font-semibold mb-2">📋 Status</label>
-
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full border rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
-          >
-            <option value="All">All</option>
-            <option value="Pass">Pass</option>
-            <option value="Fail">Fail</option>
-            <option value="Not Applicable">Not Applicable</option>
-            <option value="Unable to Test">Unable to Test</option>
-            <option value="">Pending</option>
-          </select>
-        </div> */}
-
-        {/* Clear Button */}
-
-        {/* <div className="flex items-end">
-          <button
-            onClick={clearFilters}
-            className="w-full lg:w-auto bg-gray-600 hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition cursor-pointer flex items-center gap-2"
-          >
-            <Eraser size={18} strokeWidth={2} />
-            Clear
-          </button>
-        </div> */}
       </div>
     </div>
   );

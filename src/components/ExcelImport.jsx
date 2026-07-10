@@ -46,17 +46,27 @@ function ExcelImport({ setTestCases, resetTrigger }) {
       const testCases = rows.map((row) => ({
         id: crypto.randomUUID(),
 
+        tcId: row["TC ID"] || "",
+
         module: row.Module || "",
 
         subModule: row["Sub Module"] || "",
 
         description: row.Description || "",
 
+        testSteps: row["Test Case Steps"] || "",
+
+        preCondition: row["Pre-condition"] || "",
+
+        expectedResult: row["Expected Result"] || "",
+
+        actualResult: row["Actual Result"] || "",
+
         status: row.Status || "",
 
         executionDate: row["Execution Date"] || "",
 
-        comments: row.Comments || "",
+        comments: row["Comments"] || "",
       }));
 
       setCount(testCases.length);

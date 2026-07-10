@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 
 const defaultForm = {
+  tcId: "",
   module: "",
   subModule: "",
   description: "",
-  status: "",
+  testSteps: "",
+  preCondition: "",
+  expectedResult: "",
+  actualResult: "",
   comments: "",
 };
 
@@ -14,10 +18,14 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
   useEffect(() => {
     if (editingTestCase) {
       setForm({
+        tcId: editingTestCase.tcId || "",
         module: editingTestCase.module || "",
         subModule: editingTestCase.subModule || "",
         description: editingTestCase.description || "",
-        status: editingTestCase.status || "",
+        testSteps: editingTestCase.testSteps || "",
+        preCondition: editingTestCase.preCondition || "",
+        expectedResult: editingTestCase.expectedResult || "",
+        actualResult: editingTestCase.actualResult || "",
         comments: editingTestCase.comments || "",
       });
     } else {
@@ -51,7 +59,7 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
 
         <div className="bg-blue-700 text-white px-6 py-4 rounded-t-xl">
@@ -63,6 +71,17 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
         {/* Body */}
 
         <div className="p-6 space-y-5">
+          <div>
+            <label className="font-semibold">TC ID</label>
+
+            <input
+              type="text"
+              name="tcId"
+              value={form.tcId}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
           <div>
             <label className="font-semibold">Module *</label>
 
@@ -96,6 +115,51 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
               value={form.description}
               onChange={handleChange}
               className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+          <div>
+            <label className="font-semibold">Pre-condition</label>
+
+            <textarea
+              rows="3"
+              name="preCondition"
+              value={form.preCondition}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none resize-y"
+            />
+          </div>
+          <div>
+            <label className="font-semibold">Test Case Steps</label>
+
+            <textarea
+              rows="5"
+              name="testSteps"
+              value={form.testSteps}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none resize-y"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold">Expected Result</label>
+
+            <textarea
+              rows="3"
+              name="expectedResult"
+              value={form.expectedResult}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none resize-y"
+            />
+          </div>
+          <div>
+            <label className="font-semibold">Actual Result</label>
+
+            <textarea
+              rows="3"
+              name="actualResult"
+              value={form.actualResult}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-blue-500 outline-none resize-y"
             />
           </div>
 

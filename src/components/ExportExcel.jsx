@@ -11,11 +11,16 @@ function ExportExcel({ testCases }) {
   const exportExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
       testCases.map((tc) => ({
+        "TC ID": tc.tcId,
         Module: tc.module,
         "Sub Module": tc.subModule,
         Description: tc.description,
-        Status: tc.status || "Pending",
-        "Execution Date": tc.executionDate || "",
+        "Test Case Steps": tc.testSteps,
+        "Pre-condition": tc.preCondition,
+        "Expected Result": tc.expectedResult,
+        "Actual Result": tc.actualResult,
+        Status: tc.status,
+        "Execution Date": tc.executionDate,
         Comments: tc.comments,
       })),
     );

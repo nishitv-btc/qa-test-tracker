@@ -27,6 +27,21 @@ function App() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
+  const [visibleColumns, setVisibleColumns] = useState({
+    tcId: true,
+    module: true,
+    subModule: true,
+    description: true,
+    testSteps: true,
+    preCondition: true,
+    expectedResult: true,
+    actualResult: true,
+    status: true,
+    executionDate: true,
+    comments: true,
+    actions: true,
+  });
+
   const [showModal, setShowModal] = useState(false);
 
   const [editingId, setEditingId] = useState(null);
@@ -86,14 +101,25 @@ function App() {
   const filteredData = useMemo(() => {
     let data = [...testCases];
 
-    if (search) {
-      const value = search.toLowerCase();
+    if (search.trim()) {
+      const value = search.toLowerCase().trim();
 
-      data = data.filter(
-        (item) =>
-          item.module.toLowerCase().includes(value) ||
-          item.subModule.toLowerCase().includes(value) ||
-          item.description.toLowerCase().includes(value),
+      data = data.filter((item) =>
+        [
+          item.tcId,
+          item.module,
+          item.subModule,
+          item.description,
+          item.preCondition,
+          item.testSteps,
+          item.expectedResult,
+          item.actualResult,
+          item.status,
+          item.executionDate,
+          item.comments,
+        ]
+          .filter(Boolean) // Ignore null/undefined
+          .some((field) => field.toString().toLowerCase().includes(value)),
       );
     }
 
@@ -155,10 +181,14 @@ function App() {
           item.id === editingId
             ? {
                 ...item,
+                tcId: testCase.tcId,
                 module: testCase.module,
                 subModule: testCase.subModule,
                 description: testCase.description,
-                status: testCase.status ?? item.status,
+                testSteps: testCase.testSteps,
+                preCondition: testCase.preCondition,
+                expectedResult: testCase.expectedResult,
+                actualResult: testCase.actualResult,
                 comments: testCase.comments,
               }
             : item,
@@ -169,12 +199,28 @@ function App() {
         ...prev,
         {
           id: crypto.randomUUID(),
+
+          tcId: testCase.tcId,
+
           module: testCase.module,
+
           subModule: testCase.subModule,
+
           description: testCase.description,
-          status: testCase.status ?? item.status,
+
+          testSteps: testCase.testSteps,
+
+          preCondition: testCase.preCondition,
+
+          expectedResult: testCase.expectedResult,
+
+          actualResult: testCase.actualResult,
+
+          status: "",
+
+          executionDate: "",
+
           comments: testCase.comments,
-          executionDate: testCase.status ? new Date().toLocaleString() : "",
         },
       ]);
     }
@@ -339,6 +385,8 @@ function App() {
           onCreateBug={createBug}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
+          visibleColumns={visibleColumns}
+          setVisibleColumns={setVisibleColumns}
         />
 
         <AddEditModal
