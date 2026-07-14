@@ -58,8 +58,8 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
 
         <div className="bg-blue-700 text-white px-6 py-4 rounded-t-xl">
@@ -70,7 +70,7 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
 
         {/* Body */}
 
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 overflow-y-auto flex-1">
           <div>
             <label className="font-semibold">TC ID</label>
 
@@ -180,7 +180,7 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
 
         {/* Footer */}
 
-        <div className="flex justify-end gap-3 p-6 border-t">
+        <div className="flex justify-end gap-3 p-6 border-t bg-white shrink-0">
           <button
             onClick={onClose}
             className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 cursor-pointer transition duration-200"

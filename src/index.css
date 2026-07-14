@@ -25,3 +25,24 @@
 .table-container::-webkit-scrollbar-thumb:hover {
   background: #4b5563;
 }
+
+.column-resizer {
+  cursor: col-resize;
+  height: 100%;
+  position: absolute;
+  right: -4px;
+  top: 0;
+  touch-action: none;
+  width: 8px;
+  z-index: 20;
+}
+
+.column-resizer:hover,
+.is-resizing-column .column-resizer {
+  background: rgb(37 99 235 / 0.35);
+}
+
+.is-resizing-column {
+  cursor: col-resize;
+  user-select: none;
+}

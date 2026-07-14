@@ -88,6 +88,31 @@ function renderComment(comment) {
   });
 }
 
+function ResizableHeader({
+  columnKey,
+  width,
+  label,
+  children,
+  onResizeStart,
+  onResize,
+  onResizeEnd,
+}) {
+  return (
+    <th className="border p-3 relative" style={{ width }}>
+      {children}
+      <div
+        className="column-resizer"
+        onPointerDown={(event) => onResizeStart(event, columnKey)}
+        onPointerMove={onResize}
+        onPointerUp={onResizeEnd}
+        onPointerCancel={onResizeEnd}
+        role="separator"
+        aria-label={`Resize ${label} column`}
+      />
+    </th>
+  );
+}
+
 function TestTable({
   testCases,
   updateStatus,
@@ -103,8 +128,25 @@ function TestTable({
 }) {
   const [showColumnChooser, setShowColumnChooser] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [columnWidths, setColumnWidths] = useState({
+    tcId: 100,
+    module: 140,
+    subModule: 160,
+    description: 320,
+    preCondition: 180,
+    testSteps: 280,
+    expectedResult: 240,
+    actualResult: 220,
+    status: 190,
+    executionDate: 150,
+    comments: 180,
+    actions: 120,
+  });
   const filterRef = useRef(null);
   const columnChooserRef = useRef(null);
+  const resizingRef = useRef(null);
+  const columnWidthsRef = useRef({ ...columnWidths });
+  const tableRef = useRef(null);
   const columnNames = {
     tcId: "TC ID",
     module: "Module",
@@ -142,6 +184,70 @@ function TestTable({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    columnWidthsRef.current = { ...columnWidths };
+  }, [columnWidths]);
+
+  const startResizing = (event, key) => {
+    event.preventDefault();
+    event.stopPropagation();
+    resizingRef.current = {
+      key,
+      lastX: event.clientX,
+      tableWidth,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    document.body.classList.add("is-resizing-column");
+  };
+
+  const resizeColumn = (event) => {
+    const resize = resizingRef.current;
+    if (!resize) return;
+
+    const delta = event.clientX - resize.lastX;
+    if (!delta) return;
+
+    const currentWidth = columnWidthsRef.current[resize.key];
+    const nextWidth = Math.max(80, currentWidth + delta);
+    const appliedDelta = nextWidth - currentWidth;
+    if (!appliedDelta) return;
+
+    resize.lastX = event.clientX;
+    resize.tableWidth += appliedDelta;
+    columnWidthsRef.current[resize.key] = nextWidth;
+
+    const column = tableRef.current?.querySelector(
+      `col[data-column-key="${resize.key}"]`,
+    );
+    if (column) column.style.width = `${nextWidth}px`;
+    if (tableRef.current) tableRef.current.style.width = `${resize.tableWidth}px`;
+  };
+
+  const stopResizing = (event) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setColumnWidths({ ...columnWidthsRef.current });
+    resizingRef.current = null;
+    document.body.classList.remove("is-resizing-column");
+  };
+
+  const tableWidth = useMemo(
+    () =>
+      Object.entries(visibleColumns).reduce(
+        (width, [key, isVisible]) =>
+          isVisible ? width + columnWidths[key] : width,
+        columnWidths.actions,
+      ),
+    [visibleColumns, columnWidths],
+  );
+
+  const headerProps = {
+    onResizeStart: startResizing,
+    onResize: resizeColumn,
+    onResizeEnd: stopResizing,
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -190,35 +296,53 @@ function TestTable({
       </div>
 
       <div className="table-container overflow-x-auto max-h-[70vh]">
-        <table className="min-w-full border-collapse table-fixed">
+        <table
+          ref={tableRef}
+          className="border-collapse table-fixed"
+          style={{ width: tableWidth, minWidth: "100%" }}
+        >
+          <colgroup>
+            {visibleColumns.tcId && <col data-column-key="tcId" style={{ width: columnWidths.tcId }} />}
+            {visibleColumns.module && <col data-column-key="module" style={{ width: columnWidths.module }} />}
+            {visibleColumns.subModule && <col data-column-key="subModule" style={{ width: columnWidths.subModule }} />}
+            {visibleColumns.description && <col data-column-key="description" style={{ width: columnWidths.description }} />}
+            {visibleColumns.preCondition && <col data-column-key="preCondition" style={{ width: columnWidths.preCondition }} />}
+            {visibleColumns.testSteps && <col data-column-key="testSteps" style={{ width: columnWidths.testSteps }} />}
+            {visibleColumns.expectedResult && <col data-column-key="expectedResult" style={{ width: columnWidths.expectedResult }} />}
+            {visibleColumns.actualResult && <col data-column-key="actualResult" style={{ width: columnWidths.actualResult }} />}
+            {visibleColumns.status && <col data-column-key="status" style={{ width: columnWidths.status }} />}
+            {visibleColumns.executionDate && <col data-column-key="executionDate" style={{ width: columnWidths.executionDate }} />}
+            {visibleColumns.comments && <col data-column-key="comments" style={{ width: columnWidths.comments }} />}
+            <col data-column-key="actions" style={{ width: columnWidths.actions }} />
+          </colgroup>
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               {visibleColumns.tcId && (
-                <th className="border p-3 min-w-[80px]">TC ID</th>
+                <ResizableHeader columnKey="tcId" width={columnWidths.tcId} label={columnNames.tcId} {...headerProps}>TC ID</ResizableHeader>
               )}
               {visibleColumns.module && (
-                <th className="border p-3 min-w-[100px]">Module</th>
+                <ResizableHeader columnKey="module" width={columnWidths.module} label={columnNames.module} {...headerProps}>Module</ResizableHeader>
               )}
               {visibleColumns.subModule && (
-                <th className="border p-3 min-w-[120px]">Sub Module</th>
+                <ResizableHeader columnKey="subModule" width={columnWidths.subModule} label={columnNames.subModule} {...headerProps}>Sub Module</ResizableHeader>
               )}
               {visibleColumns.description && (
-                <th className="border p-3 min-w-[300px]">Description</th>
+                <ResizableHeader columnKey="description" width={columnWidths.description} label={columnNames.description} {...headerProps}>Description</ResizableHeader>
               )}
               {visibleColumns.preCondition && (
-                <th className="border p-3 min-w-[150px]">Pre-condition</th>
+                <ResizableHeader columnKey="preCondition" width={columnWidths.preCondition} label={columnNames.preCondition} {...headerProps}>Pre-condition</ResizableHeader>
               )}
               {visibleColumns.testSteps && (
-                <th className="border p-3 min-w-[250px]">Test Case Steps</th>
+                <ResizableHeader columnKey="testSteps" width={columnWidths.testSteps} label={columnNames.testSteps} {...headerProps}>Test Case Steps</ResizableHeader>
               )}
               {visibleColumns.expectedResult && (
-                <th className="border p-3 min-w-[200px]">Expected Result</th>
+                <ResizableHeader columnKey="expectedResult" width={columnWidths.expectedResult} label={columnNames.expectedResult} {...headerProps}>Expected Result</ResizableHeader>
               )}
               {visibleColumns.actualResult && (
-                <th className="border p-3 min-w-[180px]">Actual Result</th>
+                <ResizableHeader columnKey="actualResult" width={columnWidths.actualResult} label={columnNames.actualResult} {...headerProps}>Actual Result</ResizableHeader>
               )}
               {visibleColumns.status && (
-                <th className="border p-3 min-w-[170px]">
+                <ResizableHeader columnKey="status" width={columnWidths.status} label={columnNames.status} {...headerProps}>
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">Status</span>
 
@@ -258,15 +382,15 @@ function TestTable({
                       </button>
                     )}
                   </div>
-                </th>
+                </ResizableHeader>
               )}
               {visibleColumns.executionDate && (
-                <th className="border p-3 min-w-[140px]">Execution Date</th>
+                <ResizableHeader columnKey="executionDate" width={columnWidths.executionDate} label={columnNames.executionDate} {...headerProps}>Execution Date</ResizableHeader>
               )}
               {visibleColumns.comments && (
-                <th className="border p-3 min-w-[150px]">Bug ID/Comments</th>
+                <ResizableHeader columnKey="comments" width={columnWidths.comments} label={columnNames.comments} {...headerProps}>Bug ID/Comments</ResizableHeader>
               )}
-              <th className="border p-3 min-w-[80px]">Actions</th>
+              <ResizableHeader columnKey="actions" width={columnWidths.actions} label={columnNames.actions} {...headerProps}>Actions</ResizableHeader>
             </tr>
           </thead>
 
