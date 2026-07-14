@@ -6,7 +6,7 @@ import TestTable from "./components/TestTable";
 import ExcelImport from "./components/ExcelImport";
 import ExportExcel from "./components/ExportExcel";
 import AddEditModal from "./components/AddEditModal";
-import { FileUp, FileDown, RotateCcw, Plus } from "lucide-react";
+import { FileUp, FileDown, RotateCcw, Plus, Moon, Sun } from "lucide-react";
 import {
   DocumentArrowUp24Filled,
   DocumentArrowDown24Filled,
@@ -15,10 +15,17 @@ import {
 } from "@fluentui/react-icons";
 
 const STORAGE_KEY = "qa-test-tracker";
+const THEME_STORAGE_KEY = "qa-test-tracker-theme";
 const redmine_project_id = "thominternal";
 const jira_id = "TH-2113";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    return savedTheme
+      ? savedTheme === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
   const [testCases, setTestCases] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
@@ -58,6 +65,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(testCases));
   }, [testCases]);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_STORAGE_KEY, darkMode ? "dark" : "light");
+  }, [darkMode]);
 
   // -----------------------------
   // Dashboard
@@ -146,7 +157,17 @@ function App() {
           status,
           executionDate:
             status && !item.executionDate
-              ? new Date().toLocaleString()
+              ? new Date()
+                  .toLocaleString("en-IN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                  .replace("am", "AM")
+                  .replace("pm", "PM")
               : item.executionDate,
         };
       }),
@@ -306,7 +327,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className={`app-shell min-h-screen bg-gray-100 ${darkMode ? "dark-mode" : ""}`}>
       {/* Header */}
 
       <div className="bg-blue-700 text-white shadow">
@@ -320,7 +341,7 @@ function App() {
       </div>
 
       <div className="max-w-7xl mx-auto p-6">
-        <Dashboard summary={summary} />
+        <Dashboard summary={summary} darkMode={darkMode} />
 
         {/* Import / Export */}
 
@@ -399,6 +420,16 @@ function App() {
           }}
         />
       </div>
+
+      <button
+        type="button"
+        onClick={() => setDarkMode((enabled) => !enabled)}
+        className="fixed bottom-6 right-6 z-40 rounded-full bg-gray-900 p-4 text-white shadow-xl transition hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+        aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+        title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {darkMode ? <Sun size={22} /> : <Moon size={22} />}
+      </button>
     </div>
   );
 }

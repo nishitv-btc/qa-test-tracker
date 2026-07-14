@@ -1,52 +1,53 @@
-function Dashboard({ summary }) {
+function Dashboard({ summary, darkMode }) {
+  const labelClass = darkMode ? "text-white" : "text-gray-500";
   const cards = [
     {
       title: "Total",
       value: summary.total,
-      bg: "bg-blue-100",
-      text: "text-blue-700",
+      bg: darkMode ? "bg-slate-800" : "bg-blue-100",
+      text: darkMode ? "text-blue-300" : "text-blue-700",
       border: "border-blue-500",
-      icon: "📋",
+      icon: "",
     },
     {
       title: "Passed",
       value: summary.passed,
-      bg: "bg-green-100",
-      text: "text-green-700",
+      bg: darkMode ? "bg-slate-800" : "bg-green-100",
+      text: darkMode ? "text-green-300" : "text-green-700",
       border: "border-green-500",
       icon: "",
     },
     {
       title: "Failed",
       value: summary.failed,
-      bg: "bg-red-100",
-      text: "text-red-700",
+      bg: darkMode ? "bg-slate-800" : "bg-red-100",
+      text: darkMode ? "text-red-300" : "text-red-700",
       border: "border-red-500",
       icon: "",
     },
     {
       title: "Unable to Test",
       value: summary.na,
-      bg: "bg-gray-100",
-      text: "text-gray-700",
+      bg: darkMode ? "bg-slate-800" : "bg-gray-100",
+      text: darkMode ? "text-gray-200" : "text-gray-700",
       border: "border-gray-500",
       icon: "",
     },
     {
       title: "N/A",
       value: summary.unable,
-      bg: "bg-yellow-100",
-      text: "text-yellow-700",
+      bg: darkMode ? "bg-slate-800" : "bg-yellow-100",
+      text: darkMode ? "text-yellow-300" : "text-yellow-700",
       border: "border-yellow-500",
       icon: "",
     },
     {
       title: "Pending",
       value: summary.pending,
-      bg: "bg-purple-100",
-      text: "text-purple-700",
+      bg: darkMode ? "bg-slate-800" : "bg-purple-100",
+      text: darkMode ? "text-purple-300" : "text-purple-700",
       border: "border-purple-500",
-      icon: "⏳",
+      icon: "",
     },
   ];
 
@@ -62,7 +63,7 @@ function Dashboard({ summary }) {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium">
+                <p className={`text-sm font-medium ${labelClass}`}>
                   {card.title}
                 </p>
 
@@ -99,34 +100,34 @@ function Dashboard({ summary }) {
 
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mt-6 text-center">
           <div>
-            <p className="text-gray-500 text-sm">Total</p>
+            <p className={`text-sm ${labelClass}`}>Total</p>
             <p className="font-bold text-lg">{summary.total}</p>
           </div>
 
           <div>
-            <p className="text-green-600 text-sm">Passed</p>
+            <p className={`text-sm ${labelClass}`}>Passed</p>
             <p className="font-bold text-green-700 text-lg">{summary.passed}</p>
           </div>
 
           <div>
-            <p className="text-red-600 text-sm">Failed</p>
+            <p className={`text-sm ${labelClass}`}>Failed</p>
             <p className="font-bold text-red-700 text-lg">{summary.failed}</p>
           </div>
 
           <div>
-            <p className="text-gray-600 text-sm">Unable to Test</p>
+            <p className={`text-sm ${labelClass}`}>Unable to Test</p>
             <p className="font-bold text-gray-700 text-lg">{summary.na}</p>
           </div>
 
           <div>
-            <p className="text-yellow-600 text-sm">N/A</p>
+            <p className={`text-sm ${labelClass}`}>N/A</p>
             <p className="font-bold text-yellow-700 text-lg">
               {summary.unable}
             </p>
           </div>
 
           <div>
-            <p className="text-purple-600 text-sm">Pending</p>
+            <p className={`text-sm ${labelClass}`}>Pending</p>
             <p className="font-bold text-purple-700 text-lg">
               {summary.pending}
             </p>

@@ -10,19 +10,19 @@ const statusOptions = ["", "Pass", "Fail", "Not Applicable", "Unable to Test"];
 function getStatusClass(status) {
   switch (status) {
     case "Pass":
-      return "bg-green-100 text-green-700 border-green-300";
+      return "status-select status-pass bg-green-100 text-green-700 border-green-300";
 
     case "Fail":
-      return "bg-red-100 text-red-700 border-red-300";
+      return "status-select status-fail bg-red-100 text-red-700 border-red-300";
 
     case "Not Applicable":
-      return "bg-gray-100 text-gray-700 border-gray-300";
+      return "status-select status-not-applicable bg-gray-100 text-gray-700 border-gray-300";
 
     case "Unable to Test":
-      return "bg-yellow-100 text-yellow-700 border-yellow-300";
+      return "status-select status-unable bg-yellow-100 text-yellow-700 border-yellow-300";
 
     default:
-      return "bg-white text-gray-600 border-gray-300";
+      return "status-select status-pending bg-white text-gray-600 border-gray-300";
   }
 }
 
@@ -221,7 +221,8 @@ function TestTable({
       `col[data-column-key="${resize.key}"]`,
     );
     if (column) column.style.width = `${nextWidth}px`;
-    if (tableRef.current) tableRef.current.style.width = `${resize.tableWidth}px`;
+    if (tableRef.current)
+      tableRef.current.style.width = `${resize.tableWidth}px`;
   };
 
   const stopResizing = (event) => {
@@ -262,7 +263,7 @@ function TestTable({
             className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
           >
             <Filter size={18} />
-            Columns
+            Column selector
           </button>
 
           {showColumnChooser && (
@@ -302,49 +303,168 @@ function TestTable({
           style={{ width: tableWidth, minWidth: "100%" }}
         >
           <colgroup>
-            {visibleColumns.tcId && <col data-column-key="tcId" style={{ width: columnWidths.tcId }} />}
-            {visibleColumns.module && <col data-column-key="module" style={{ width: columnWidths.module }} />}
-            {visibleColumns.subModule && <col data-column-key="subModule" style={{ width: columnWidths.subModule }} />}
-            {visibleColumns.description && <col data-column-key="description" style={{ width: columnWidths.description }} />}
-            {visibleColumns.preCondition && <col data-column-key="preCondition" style={{ width: columnWidths.preCondition }} />}
-            {visibleColumns.testSteps && <col data-column-key="testSteps" style={{ width: columnWidths.testSteps }} />}
-            {visibleColumns.expectedResult && <col data-column-key="expectedResult" style={{ width: columnWidths.expectedResult }} />}
-            {visibleColumns.actualResult && <col data-column-key="actualResult" style={{ width: columnWidths.actualResult }} />}
-            {visibleColumns.status && <col data-column-key="status" style={{ width: columnWidths.status }} />}
-            {visibleColumns.executionDate && <col data-column-key="executionDate" style={{ width: columnWidths.executionDate }} />}
-            {visibleColumns.comments && <col data-column-key="comments" style={{ width: columnWidths.comments }} />}
-            <col data-column-key="actions" style={{ width: columnWidths.actions }} />
+            {visibleColumns.tcId && (
+              <col
+                data-column-key="tcId"
+                style={{ width: columnWidths.tcId }}
+              />
+            )}
+            {visibleColumns.module && (
+              <col
+                data-column-key="module"
+                style={{ width: columnWidths.module }}
+              />
+            )}
+            {visibleColumns.subModule && (
+              <col
+                data-column-key="subModule"
+                style={{ width: columnWidths.subModule }}
+              />
+            )}
+            {visibleColumns.description && (
+              <col
+                data-column-key="description"
+                style={{ width: columnWidths.description }}
+              />
+            )}
+            {visibleColumns.preCondition && (
+              <col
+                data-column-key="preCondition"
+                style={{ width: columnWidths.preCondition }}
+              />
+            )}
+            {visibleColumns.testSteps && (
+              <col
+                data-column-key="testSteps"
+                style={{ width: columnWidths.testSteps }}
+              />
+            )}
+            {visibleColumns.expectedResult && (
+              <col
+                data-column-key="expectedResult"
+                style={{ width: columnWidths.expectedResult }}
+              />
+            )}
+            {visibleColumns.actualResult && (
+              <col
+                data-column-key="actualResult"
+                style={{ width: columnWidths.actualResult }}
+              />
+            )}
+            {visibleColumns.status && (
+              <col
+                data-column-key="status"
+                style={{ width: columnWidths.status }}
+              />
+            )}
+            {visibleColumns.executionDate && (
+              <col
+                data-column-key="executionDate"
+                style={{ width: columnWidths.executionDate }}
+              />
+            )}
+            {visibleColumns.comments && (
+              <col
+                data-column-key="comments"
+                style={{ width: columnWidths.comments }}
+              />
+            )}
+            <col
+              data-column-key="actions"
+              style={{ width: columnWidths.actions }}
+            />
           </colgroup>
           <thead className="bg-gray-100 sticky top-0 z-10">
             <tr>
               {visibleColumns.tcId && (
-                <ResizableHeader columnKey="tcId" width={columnWidths.tcId} label={columnNames.tcId} {...headerProps}>TC ID</ResizableHeader>
+                <ResizableHeader
+                  columnKey="tcId"
+                  width={columnWidths.tcId}
+                  label={columnNames.tcId}
+                  {...headerProps}
+                >
+                  TC ID
+                </ResizableHeader>
               )}
               {visibleColumns.module && (
-                <ResizableHeader columnKey="module" width={columnWidths.module} label={columnNames.module} {...headerProps}>Module</ResizableHeader>
+                <ResizableHeader
+                  columnKey="module"
+                  width={columnWidths.module}
+                  label={columnNames.module}
+                  {...headerProps}
+                >
+                  Module
+                </ResizableHeader>
               )}
               {visibleColumns.subModule && (
-                <ResizableHeader columnKey="subModule" width={columnWidths.subModule} label={columnNames.subModule} {...headerProps}>Sub Module</ResizableHeader>
+                <ResizableHeader
+                  columnKey="subModule"
+                  width={columnWidths.subModule}
+                  label={columnNames.subModule}
+                  {...headerProps}
+                >
+                  Sub Module
+                </ResizableHeader>
               )}
               {visibleColumns.description && (
-                <ResizableHeader columnKey="description" width={columnWidths.description} label={columnNames.description} {...headerProps}>Description</ResizableHeader>
+                <ResizableHeader
+                  columnKey="description"
+                  width={columnWidths.description}
+                  label={columnNames.description}
+                  {...headerProps}
+                >
+                  Description
+                </ResizableHeader>
               )}
               {visibleColumns.preCondition && (
-                <ResizableHeader columnKey="preCondition" width={columnWidths.preCondition} label={columnNames.preCondition} {...headerProps}>Pre-condition</ResizableHeader>
+                <ResizableHeader
+                  columnKey="preCondition"
+                  width={columnWidths.preCondition}
+                  label={columnNames.preCondition}
+                  {...headerProps}
+                >
+                  Pre-condition
+                </ResizableHeader>
               )}
               {visibleColumns.testSteps && (
-                <ResizableHeader columnKey="testSteps" width={columnWidths.testSteps} label={columnNames.testSteps} {...headerProps}>Test Case Steps</ResizableHeader>
+                <ResizableHeader
+                  columnKey="testSteps"
+                  width={columnWidths.testSteps}
+                  label={columnNames.testSteps}
+                  {...headerProps}
+                >
+                  Test Case Steps
+                </ResizableHeader>
               )}
               {visibleColumns.expectedResult && (
-                <ResizableHeader columnKey="expectedResult" width={columnWidths.expectedResult} label={columnNames.expectedResult} {...headerProps}>Expected Result</ResizableHeader>
+                <ResizableHeader
+                  columnKey="expectedResult"
+                  width={columnWidths.expectedResult}
+                  label={columnNames.expectedResult}
+                  {...headerProps}
+                >
+                  Expected Result
+                </ResizableHeader>
               )}
               {visibleColumns.actualResult && (
-                <ResizableHeader columnKey="actualResult" width={columnWidths.actualResult} label={columnNames.actualResult} {...headerProps}>Actual Result</ResizableHeader>
+                <ResizableHeader
+                  columnKey="actualResult"
+                  width={columnWidths.actualResult}
+                  label={columnNames.actualResult}
+                  {...headerProps}
+                >
+                  Actual Result
+                </ResizableHeader>
               )}
               {visibleColumns.status && (
-                <ResizableHeader columnKey="status" width={columnWidths.status} label={columnNames.status} {...headerProps}>
+                <ResizableHeader
+                  columnKey="status"
+                  width={columnWidths.status}
+                  label={columnNames.status}
+                  {...headerProps}
+                >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold">Status</span>
+                    <span className="font-=bold">Status</span>
 
                     {showFilter ? (
                       <div className="flex items-center gap-1">
@@ -385,12 +505,33 @@ function TestTable({
                 </ResizableHeader>
               )}
               {visibleColumns.executionDate && (
-                <ResizableHeader columnKey="executionDate" width={columnWidths.executionDate} label={columnNames.executionDate} {...headerProps}>Execution Date</ResizableHeader>
+                <ResizableHeader
+                  columnKey="executionDate"
+                  width={columnWidths.executionDate}
+                  label={columnNames.executionDate}
+                  {...headerProps}
+                >
+                  Execution Date
+                </ResizableHeader>
               )}
               {visibleColumns.comments && (
-                <ResizableHeader columnKey="comments" width={columnWidths.comments} label={columnNames.comments} {...headerProps}>Bug ID/Comments</ResizableHeader>
+                <ResizableHeader
+                  columnKey="comments"
+                  width={columnWidths.comments}
+                  label={columnNames.comments}
+                  {...headerProps}
+                >
+                  Bug ID / Comments
+                </ResizableHeader>
               )}
-              <ResizableHeader columnKey="actions" width={columnWidths.actions} label={columnNames.actions} {...headerProps}>Actions</ResizableHeader>
+              <ResizableHeader
+                columnKey="actions"
+                width={columnWidths.actions}
+                label={columnNames.actions}
+                {...headerProps}
+              >
+                Actions
+              </ResizableHeader>
             </tr>
           </thead>
 

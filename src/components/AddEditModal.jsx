@@ -183,7 +183,7 @@ function AddEditModal({ open, onClose, onSave, editingTestCase }) {
         <div className="flex justify-end gap-3 p-6 border-t bg-white shrink-0">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 cursor-pointer transition duration-200"
+            className="modal-cancel-button px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 cursor-pointer transition duration-200"
           >
             Cancel
           </button>

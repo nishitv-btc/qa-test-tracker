@@ -4,12 +4,12 @@
 
 /* Vertical Scrollbar */
 .table-container::-webkit-scrollbar {
-  width: 18px;
+  width: 16px;
 }
 
 /* Horizontal Scrollbar */
 .table-container::-webkit-scrollbar:horizontal {
-  height: 18px;
+  height: 10px;
 }
 
 .table-container::-webkit-scrollbar-track {
@@ -45,4 +45,99 @@
 .is-resizing-column {
   cursor: col-resize;
   user-select: none;
+}
+
+.dark-mode {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+.dark-mode .bg-white,
+.dark-mode .bg-gray-100 {
+  background-color: #1f2937 !important;
+}
+
+.dark-mode .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.dark-mode .border,
+.dark-mode .border-t,
+.dark-mode .border-b,
+.dark-mode .border-gray-200,
+.dark-mode .border-gray-300 {
+  border-color: #4b5563 !important;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #111827 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark-mode .text-black,
+.dark-mode .text-gray-900,
+.dark-mode .text-gray-800,
+.dark-mode .text-gray-700,
+.dark-mode .text-gray-600,
+.dark-mode .text-gray-500 {
+  color: #d1d5db !important;
+}
+
+.dark-mode .hover\:bg-gray-100:hover,
+.dark-mode .hover\:bg-blue-50:hover {
+  background-color: #374151 !important;
+}
+
+.dark-mode .table-container::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark-mode .table-container::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark-mode .modal-cancel-button {
+  background-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark-mode .modal-cancel-button:hover {
+  background-color: #6b7280 !important;
+}
+
+.dark-mode .dashboard-summary-label {
+  color: #e5e7eb !important;
+}
+
+.dark-mode .status-select.status-pending {
+  background-color: #374151 !important;
+  border-color: #6b7280 !important;
+  color: #f3f4f6 !important;
+}
+
+.dark-mode .status-select.status-pass {
+  background-color: #14532d !important;
+  border-color: #22c55e !important;
+  color: #bbf7d0 !important;
+}
+
+.dark-mode .status-select.status-fail {
+  background-color: #7f1d1d !important;
+  border-color: #f87171 !important;
+  color: #fecaca !important;
+}
+
+.dark-mode .status-select.status-not-applicable {
+  background-color: #374151 !important;
+  border-color: #9ca3af !important;
+  color: #e5e7eb !important;
+}
+
+.dark-mode .status-select.status-unable {
+  background-color: #713f12 !important;
+  border-color: #facc15 !important;
+  color: #fef3c7 !important;
 }
