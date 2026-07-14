@@ -6,7 +6,7 @@ import TestTable from "./components/TestTable";
 import ExcelImport from "./components/ExcelImport";
 import ExportExcel from "./components/ExportExcel";
 import AddEditModal from "./components/AddEditModal";
-import { FileUp, FileDown, RotateCcw, Plus, Moon, Sun } from "lucide-react";
+import { FileUp, FileDown, RotateCcw, Plus, Moon, Sun, ArrowUp } from "lucide-react";
 import {
   DocumentArrowUp24Filled,
   DocumentArrowDown24Filled,
@@ -26,6 +26,7 @@ function App() {
       ? savedTheme === "dark"
       : window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [testCases, setTestCases] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return saved ? JSON.parse(saved) : [];
@@ -69,6 +70,15 @@ function App() {
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, darkMode ? "dark" : "light");
   }, [darkMode]);
+
+  useEffect(() => {
+    const updateScrollButton = () => setShowScrollTop(window.scrollY > 250);
+
+    window.addEventListener("scroll", updateScrollButton, { passive: true });
+    updateScrollButton();
+
+    return () => window.removeEventListener("scroll", updateScrollButton);
+  }, []);
 
   // -----------------------------
   // Dashboard
@@ -430,6 +440,18 @@ function App() {
       >
         {darkMode ? <Sun size={22} /> : <Moon size={22} />}
       </button>
+
+      {showScrollTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-24 right-6 z-40 rounded-full bg-blue-600 p-4 text-white shadow-xl transition hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+          aria-label="Scroll to top"
+          title="Scroll to top"
+        >
+          <ArrowUp size={22} />
+        </button>
+      )}
     </div>
   );
 }
