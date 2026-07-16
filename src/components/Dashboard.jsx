@@ -27,7 +27,7 @@ function Dashboard({ summary, darkMode }) {
     },
     {
       title: "Unable to Test",
-      value: summary.na,
+      value: summary.unable,
       bg: darkMode ? "bg-slate-800" : "bg-gray-100",
       text: darkMode ? "text-gray-200" : "text-gray-700",
       border: "border-gray-500",
@@ -35,7 +35,7 @@ function Dashboard({ summary, darkMode }) {
     },
     {
       title: "N/A",
-      value: summary.unable,
+      value: summary.na,
       bg: darkMode ? "bg-slate-800" : "bg-yellow-100",
       text: darkMode ? "text-yellow-300" : "text-yellow-700",
       border: "border-yellow-500",
@@ -116,14 +116,12 @@ function Dashboard({ summary, darkMode }) {
 
           <div>
             <p className={`text-sm ${labelClass}`}>Unable to Test</p>
-            <p className="font-bold text-gray-700 text-lg">{summary.na}</p>
+            <p className="font-bold text-gray-700 text-lg">{summary.unable}</p>
           </div>
 
           <div>
             <p className={`text-sm ${labelClass}`}>N/A</p>
-            <p className="font-bold text-yellow-700 text-lg">
-              {summary.unable}
-            </p>
+            <p className="font-bold text-yellow-700 text-lg">{summary.na}</p>
           </div>
 
           <div>
