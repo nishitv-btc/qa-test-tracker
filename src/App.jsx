@@ -1,13 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
-
+import { useAuth } from "./auth/AuthContext";
 import Dashboard from "./components/Dashboard";
 import SearchFilter from "./components/SearchFilter";
 import TestTable from "./components/TestTable";
-
+import Header from "./components/Header";
 import ExcelImport from "./components/ExcelImport";
 import ExportExcel from "./components/ExportExcel";
 import AddEditModal from "./components/AddEditModal";
-import { FileUp, FileDown, RotateCcw, Plus, Moon, Sun, ArrowUp } from "lucide-react";
+import {
+  FileUp,
+  FileDown,
+  RotateCcw,
+  Plus,
+  Moon,
+  Sun,
+  ArrowUp,
+} from "lucide-react";
 import {
   DocumentArrowUp24Filled,
   DocumentArrowDown24Filled,
@@ -21,6 +29,7 @@ const redmine_project_id = "thominternal";
 const jira_id = "TH-2113";
 
 function App() {
+  const { keycloak, authenticated, user } = useAuth();
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     return savedTheme
@@ -338,18 +347,12 @@ function App() {
   };
 
   return (
-    <div className={`app-shell min-h-screen bg-gray-100 ${darkMode ? "dark-mode" : ""}`}>
+    <div
+      className={`app-shell min-h-screen bg-gray-100 ${darkMode ? "dark-mode" : ""}`}
+    >
       {/* Header */}
 
-      <div className="bg-blue-700 text-white shadow">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold">QA Test Execution Tracker</h1>
-
-            <p className="text-blue-100 mt-1">Execute and Track Test Cases</p>
-          </div>
-        </div>
-      </div>
+      <Header />
 
       <div className="max-w-7xl mx-auto p-6">
         <Dashboard summary={summary} darkMode={darkMode} />
